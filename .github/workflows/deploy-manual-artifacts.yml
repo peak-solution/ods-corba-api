@@ -8,19 +8,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check artifacts
-        run: |
-          test -f target/ods-corba-api-*.jar
-          test -f target/ods-corba-api-*.jar.asc
-          test -f target/ods-corba-api-*-sources.jar
-          test -f target/ods-corba-api-*-sources.jar.asc
-          test -f target/ods-corba-api-*-javadoc.jar
-          test -f target/ods-corba-api-*-javadoc.jar.asc
-          test -f target/ods-corba-api-*.pom
-          test -f target/ods-corba-api-*.pom.asc
-
       - name: Checkout repo
         uses: actions/checkout@v4
+
+      - name: Check artifacts
+        run: |
+          ls target/ods-corba-api-*.jar
+          ls target/ods-corba-api-*.jar.asc
+          ls target/ods-corba-api-*-sources.jar
+          ls target/ods-corba-api-*-sources.jar.asc
+          ls target/ods-corba-api-*-javadoc.jar
+          ls target/ods-corba-api-*-javadoc.jar.asc
+          ls target/ods-corba-api-*.pom
+          ls target/ods-corba-api-*.pom.asc
 
       - name: Import GPG key
         run: |
