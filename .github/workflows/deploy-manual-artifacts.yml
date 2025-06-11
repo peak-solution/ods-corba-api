@@ -22,13 +22,6 @@ jobs:
           ls target/ods-corba-api-*.pom
           ls target/ods-corba-api-*.pom.asc
 
-      - name: Import GPG key
-        run: |
-          echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --batch --import
-          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg.conf
-        env:
-          GPG_TTY: $(tty)
-
       - name: Set up Maven
         uses: actions/setup-java@v4
         with:
