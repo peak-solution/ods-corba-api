@@ -36,7 +36,6 @@ jobs:
           java-version: 17
           cache: maven
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
-          gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
           server-id: ossrh
 
       - name: Deploy manually added artifacts
