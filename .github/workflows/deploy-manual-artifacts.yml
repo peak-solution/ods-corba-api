@@ -32,4 +32,4 @@ jobs:
           server-id: ossrh
 
       - name: Deploy manually added artifacts
-        run: mvn deploy -Prelease -Dgpg.passphrase="${{ secrets.GPG_PASSPHRASE }} -DskipTests -Dmaven.deploy.skip=false"
+        run: mvn deploy -Prelease -DskipTests -Dmaven.deploy.skip=false"
