@@ -1,0 +1,274 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.peak-solution</groupId>
+	<artifactId>ods-corba-api</artifactId>
+	<version>5.3.1.1</version>
+	<packaging>jar</packaging>
+
+	<name>ODS CORBA API</name>
+	<description>ODS CORBA API classes generated from the official ods*.idl file</description>
+	<url>https://github.com/peak-solution/ods-corba-api</url>
+
+	<developers>
+		<developer>
+			<name>Markus Renner</name>
+		</developer>
+	</developers>
+
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<comments>A business-friendly OSS license</comments>
+		</license>
+	</licenses>
+
+	<scm>
+		<url>https://github.com/peak-solution/ods-corba-api</url>
+		<connection>
+			scm:git:git://github.com/peak-solution/ods-corba-api.git</connection>
+		<developerConnection>
+			scm:git:ssh://git@github.com:peak-solution/ods-corba-api.git</developerConnection>
+		<tag>v5.3.1.1</tag>
+	</scm>
+
+	<properties>
+		<api.spec.version>5.3.1</api.spec.version>
+		<maven.compiler.release>17</maven.compiler.release>
+		<project.encoding>UTF-8</project.encoding>
+		<!-- The encoding of the ASAM ODS idl file, the only "source" of this project -->
+		<project.build.sourceEncoding>cp1252</project.build.sourceEncoding>
+	</properties>
+
+	<dependencies>
+		<!-- ASAM IDL not bundled due to licensing constraints.
+    	 Place it in src/main/idl/ods*.idl before building locally.
+		-->
+		<dependency>
+			<groupId>org.glassfish.corba</groupId>
+			<artifactId>glassfish-corba-omgapi</artifactId>
+			<version>5.0.0</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<sourceDirectory>target/generated-sources/idl</sourceDirectory>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.14.0</version>
+			</plugin>
+			<plugin>
+				<groupId>pl.project13.maven</groupId>
+				<artifactId>git-commit-id-plugin</artifactId>
+				<version>4.9.10</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>revision</goal>
+						</goals>
+						<phase>initialize</phase>
+					</execution>
+				</executions>
+				<configuration>
+					<generateGitPropertiesFile>true</generateGitPropertiesFile>
+					<generateGitPropertiesFilename>target/classes/git.properties</generateGitPropertiesFilename>
+					<includeOnlyProperties>
+						<includeOnlyProperty>git.commit.id</includeOnlyProperty>
+						<includeOnlyProperty>git.commit.id.abbrev</includeOnlyProperty>
+						<includeOnlyProperty>git.branch</includeOnlyProperty>
+						<includeOnlyProperty>git.build.version</includeOnlyProperty>
+					</includeOnlyProperties>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.4.2</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+						</manifest>
+						<manifestEntries>
+							<Implementation-URL>https://github.com/peak-solution/ods-corba-api</Implementation-URL>
+							<Implementation-Vendor>Peak Solution GmbH</Implementation-Vendor>
+							<Specification-Version>${api.spec.version}</Specification-Version>
+							<SCM-Revision>${git.commit.id.abbrev}</SCM-Revision>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>3.3.1</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>idlj-maven-plugin</artifactId>
+				<version>1.2.2</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<compiler>glassfish</compiler>
+					<debug>false</debug>
+					<sources>
+						<source>
+							<includes>
+								<include>ods531.idl</include>
+							</includes>
+							<compatible>false</compatible>
+							<additionalArguments>
+								<additionalArgument>-fallTIE</additionalArgument>
+							</additionalArguments>
+						</source>
+					</sources>
+				</configuration>
+			</plugin>
+			<plugin>
+				<!-- For compatibility with older API builds by JacORB as well as Java SUN ORB, some adjustments have to be made to the resulting code. -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>3.1.0</version>
+				<executions>
+					<execution>
+						<phase>process-sources</phase>
+						<configuration>
+							<target>
+								<replace token="  public void _default ()"
+									value="public void __default () { _default(); }${line.separator}public void _default ()"
+									dir="target/generated-sources">
+									<include name="**/TS_UnionSeq.java" />
+								</replace>
+								<replace
+									token="  public org.asam.ods.SelOperator _operator ()"
+									value="public org.asam.ods.SelOperator operator() { return _operator(); }${line.separator}public org.asam.ods.SelOperator _operator ()"
+									dir="target/generated-sources">
+									<include name="**/SelItem.java" />
+								</replace>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- javadoc does make little sense for idl compiled code but is required for Maven central deployment -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.11.2</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<configuration>
+							<failOnError>false</failOnError>
+							<additionalJOptions>
+								<additionalJOption>-Xdoclint:none</additionalJOption>
+							</additionalJOptions>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>3.7.1</version>
+				<configuration>
+					<descriptors>
+						<descriptor>src/assembly/assembly.xml</descriptor>
+					</descriptors>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<profiles>
+		<profile>
+			<id>release</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>3.2.7</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.sonatype.plugins</groupId>
+						<artifactId>nexus-staging-maven-plugin</artifactId>
+						<version>1.7.0</version>
+						<extensions>true</extensions>
+						<configuration>
+							<serverId>ossrh</serverId>
+							<nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+							<autoReleaseAfterClose>true</autoReleaseAfterClose>
+						</configuration>
+					</plugin>
+					<!--
+					 Enforcer plugin is disabled. Re-enable if stricter Maven version control is needed.
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-enforcer-plugin</artifactId>
+						<version>3.5.0</version>
+						<executions>
+							<execution>
+								<id>enforce-maven</id>
+								<goals>
+									<goal>enforce</goal>
+								</goals>
+								<configuration>
+									<rules>
+										<requireMavenVersion>
+											<version>3.5.4</version>
+										</requireMavenVersion>
+									</rules>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					-->
+				</plugins>
+			</build>
+
+			<distributionManagement>
+				<repository>
+					<id>ossrh</id>
+					<url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+				</repository>
+			</distributionManagement>
+		</profile>
+	</profiles>
+</project>

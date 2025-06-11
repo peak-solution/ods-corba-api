@@ -1,0 +1,43 @@
+name: Deploy to Maven Central (manual artifacts)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check artifacts
+        run: |
+          test -f target/ods-corba-api-*.jar
+          test -f target/ods-corba-api-*.jar.asc
+          test -f target/ods-corba-api-*-sources.jar
+          test -f target/ods-corba-api-*-sources.jar.asc
+          test -f target/ods-corba-api-*-javadoc.jar
+          test -f target/ods-corba-api-*-javadoc.jar.asc
+          test -f target/ods-corba-api-*.pom
+          test -f target/ods-corba-api-*.pom.asc
+
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Import GPG key
+        run: |
+          echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --batch --import
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg.conf
+        env:
+          GPG_TTY: $(tty)
+
+      - name: Set up Maven
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: maven
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
+          server-id: ossrh
+
+      - name: Deploy manually added artifacts
+        run: mvn deploy -Prelease -Dgpg.passphrase="${{ secrets.GPG_PASSPHRASE }} -DskipTests -Dmaven.deploy.skip=false"
