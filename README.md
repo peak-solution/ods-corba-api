@@ -6,7 +6,7 @@ Note, that in order to build this API locally you will require to put the ods*.i
 
 ## Deployment
 
-The build of the zip and the jars is done locally and the artifacts are committed to the repository under the target dolfer. A build on GitHub is impossible because of the ods*.idl files not being public domain but restricted by [ASAM license](https://www.asam.net/license/). The GitHub release process attaching the zip triggers automatically when a tag "v*" is pushed. The deployment of the jar to Maven central must be triggered manually through the respective GitHub action.
+The build of the zip and the jars is done locally and the artifacts are committed to the repository under the target folder. A build on GitHub is impossible because of the ods*.idl files not being public domain but restricted by [ASAM license](https://www.asam.net/license/). The GitHub release process attaching the zip triggers automatically when a tag "v*" is pushed. The deployment of the jar to Maven central must be triggered manually through the respective GitHub action.
 
 ## GPG Key
 
