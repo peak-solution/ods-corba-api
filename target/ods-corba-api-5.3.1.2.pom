@@ -4,12 +4,21 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.peak-solution</groupId>
 	<artifactId>ods-corba-api</artifactId>
-	<version>${project.version}</version>
+	<version>5.3.1.2</version>
 	<packaging>jar</packaging>
 
 	<name>ODS CORBA API</name>
 	<description>ODS CORBA API classes generated from the official ods*.idl file</description>
 	<url>https://github.com/peak-solution/ods-corba-api</url>
+
+	<properties>
+		<project.version>5.3.1.2</project.version>
+		<api.spec.version>5.3.1</api.spec.version>
+		<maven.compiler.release>17</maven.compiler.release>
+		<project.encoding>UTF-8</project.encoding>
+		<!-- The encoding of the ASAM ODS idl file, the only "source" of this project -->
+		<project.build.sourceEncoding>cp1252</project.build.sourceEncoding>
+	</properties>
 
 	<developers>
 		<developer>
@@ -27,21 +36,11 @@
 
 	<scm>
 		<url>https://github.com/peak-solution/ods-corba-api</url>
-		<connection>
-			scm:git:git://github.com/peak-solution/ods-corba-api.git</connection>
-		<developerConnection>
-			scm:git:ssh://git@github.com:peak-solution/ods-corba-api.git</developerConnection>
+		<connection>scm:git:https://github.com/peak-solution/ods-corba-api.git</connection>
 		<tag>v${project.version}</tag>
 	</scm>
 
-	<properties>
-		<project.version>5.3.1.2</project.version>
-		<api.spec.version>5.3.1</api.spec.version>
-		<maven.compiler.release>17</maven.compiler.release>
-		<project.encoding>UTF-8</project.encoding>
-		<!-- The encoding of the ASAM ODS idl file, the only "source" of this project -->
-		<project.build.sourceEncoding>cp1252</project.build.sourceEncoding>
-	</properties>
+
 
 	<dependencies>
 		<!-- ASAM IDL not bundled due to licensing constraints.
@@ -238,39 +237,15 @@
 			<build>
 				<plugins>
 					<plugin>
-						<groupId>org.sonatype.plugins</groupId>
-						<artifactId>nexus-staging-maven-plugin</artifactId>
-						<version>1.7.0</version>
+						<groupId>org.sonatype.central</groupId>
+						<artifactId>central-publishing-maven-plugin</artifactId>
+						<version>0.7.0</version>
 						<extensions>true</extensions>
 						<configuration>
-							<serverId>ossrh</serverId>
-							<nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
-							<autoReleaseAfterClose>true</autoReleaseAfterClose>
+							<publishingServerId>central</publishingServerId>
+							<autoPublish>true</autoPublish>
 						</configuration>
 					</plugin>
-					<!--
-					 Enforcer plugin is disabled. Re-enable if stricter Maven version control is needed.
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-enforcer-plugin</artifactId>
-						<version>3.5.0</version>
-						<executions>
-							<execution>
-								<id>enforce-maven</id>
-								<goals>
-									<goal>enforce</goal>
-								</goals>
-								<configuration>
-									<rules>
-										<requireMavenVersion>
-											<version>3.5.4</version>
-										</requireMavenVersion>
-									</rules>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-					-->
 				</plugins>
 			</build>
 
