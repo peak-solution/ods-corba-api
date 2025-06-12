@@ -235,6 +235,27 @@
 			<build>
 				<plugins>
 					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<version>3.1.0</version>
+						<executions>
+							<execution>
+								<phase>install</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<configuration>
+									<target>
+										<!-- Copy .asc-files into staging folder, because this is not done by the publishing plugin -->
+										<copy file="${project.build.directory}/ods-corba-api-${project.version}.jar.asc" todir="${project.build.directory}/central-staging/com/peak-solution/ods-corba-api/${project.version}"/>
+										<copy file="${project.build.directory}/ods-corba-api-${project.version}.pom.asc" todir="${project.build.directory}/central-staging/com/peak-solution/ods-corba-api/${project.version}"/>
+										<copy file="${project.build.directory}/ods-corba-api-${project.version}-sources.jar.asc" todir="${project.build.directory}/central-staging/com/peak-solution/ods-corba-api/${project.version}"/>
+									</target>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
 						<groupId>org.sonatype.central</groupId>
 						<artifactId>central-publishing-maven-plugin</artifactId>
 						<version>0.7.0</version>
