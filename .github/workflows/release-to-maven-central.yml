@@ -28,12 +28,12 @@ jobs:
           distribution: temurin
           java-version: 17
           cache: maven
-          server-username: OSSRH_USER
-          server-password: OSSRH_PW
-          server-id: ossrh
+          server-username: MAVEN_USER
+          server-password: MAVEN_PW
+          server-id: central
 
       - name: Deploy manually added artifacts
         env:
-          OSSRH_USER: ${{ secrets.OSSRH_USERNAME }}
-          OSSRH_PW: ${{ secrets.OSSRH_PASSWORD }}
+          MAVEN_USER: ${{ secrets.OSSRH_USERNAME }}
+          MAVEN_PW: ${{ secrets.OSSRH_PASSWORD }}
         run: mvn deploy -Prelease -Dgpg.skip=true -DskipTests -Dmaven.deploy.skip=false

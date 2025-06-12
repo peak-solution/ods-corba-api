@@ -40,8 +40,6 @@
 		<tag>v${project.version}</tag>
 	</scm>
 
-
-
 	<dependencies>
 		<!-- ASAM IDL not bundled due to licensing constraints.
     	 Place it in src/main/idl/ods*.idl before building locally.
