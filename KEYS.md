@@ -2,14 +2,14 @@
 
 Used for signing Maven Central releases. You should verify the artifact signatures using this public key before trusting any published release.
 
-- Key ID: `0xAA2E718DF80DD557`
-- Fingerprint: `04E2 72BB 9220 C152 5E89  0A57 AA2E 718D F80D D557`
+- Key ID: `0x06C84BD97E83C4FD`
+- Fingerprint: `FDDE 0EF7 B130 2B9E C17B  D3C9 06C8 4BD9 7E83 C4FD`
 - UID: `Peak Solution CI Signing Key <ci@peak-solution.de>`
 - Keyserver: `keys.openpgp.org`
 
 To import the key:
 ```
-gpg --keyserver keys.openpgp.org --recv-keys 0xAA2E718DF80DD557
+gpg --keyserver keys.openpgp.org --recv-keys 0x06C84BD97E83C4FD
 ```
 
 # GPG Keys of Maintainers

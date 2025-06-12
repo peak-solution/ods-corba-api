@@ -11,6 +11,6 @@ The build of the zip and the jars is done locally and the artifacts are committe
 ## GPG Key
 
 This key is used for signing of releases:
-**Key ID**: `0xAA2E718DF80DD557`  
-**Fingerprint**: `04E2 72BB 9220 C152 5E89  0A57 AA2E 718D F80D D557`  
+**Key ID**: `0x06C84BD97E83C4FD`  
+**Fingerprint**: `FDDE 0EF7 B130 2B9E C17B  D3C9 06C8 4BD9 7E83 C4FD`  
 **Keyserver**: `https://keys.openpgp.org`

@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.peak-solution</groupId>
 	<artifactId>ods-corba-api</artifactId>
-	<version>5.3.1.1</version>
+	<version>${project.version}</version>
 	<packaging>jar</packaging>
 
 	<name>ODS CORBA API</name>
@@ -31,10 +31,11 @@
 			scm:git:git://github.com/peak-solution/ods-corba-api.git</connection>
 		<developerConnection>
 			scm:git:ssh://git@github.com:peak-solution/ods-corba-api.git</developerConnection>
-		<tag>v5.3.1.1</tag>
+		<tag>v${project.version}</tag>
 	</scm>
 
 	<properties>
+		<project.version>5.3.1.2</project.version>
 		<api.spec.version>5.3.1</api.spec.version>
 		<maven.compiler.release>17</maven.compiler.release>
 		<project.encoding>UTF-8</project.encoding>
@@ -206,10 +207,7 @@
 
 	<profiles>
 		<profile>
-			<id>release</id>
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
+			<id>sign-artifacts</id>
 			<build>
 				<plugins>
 					<plugin>
@@ -223,9 +221,22 @@
 								<goals>
 									<goal>sign</goal>
 								</goals>
+								<configuration>
+									<keyname>06C84BD97E83C4FD</keyname>
+								</configuration>
 							</execution>
 						</executions>
 					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>release</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
 					<plugin>
 						<groupId>org.sonatype.plugins</groupId>
 						<artifactId>nexus-staging-maven-plugin</artifactId>
