@@ -14,13 +14,9 @@ jobs:
       - name: Check artifacts
         run: |
           ls target/ods-corba-api-*.jar
-          ls target/ods-corba-api-*.jar.asc
           ls target/ods-corba-api-*-sources.jar
-          ls target/ods-corba-api-*-sources.jar.asc
           ls target/ods-corba-api-*-javadoc.jar
-          ls target/ods-corba-api-*-javadoc.jar.asc
           ls target/ods-corba-api-*.pom
-          ls target/ods-corba-api-*.pom.asc
 
       - name: Set up Maven
         uses: actions/setup-java@v4
