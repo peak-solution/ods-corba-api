@@ -32,8 +32,10 @@ jobs:
           server-password: MAVEN_PW
           server-id: central
 
-      - name: Deploy manually added artifacts
+      - name: Release package to Maven central
         env:
           MAVEN_USER: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PW: ${{ secrets.OSSRH_PASSWORD }}
+          MAVEN_GPG_KEY: ${{ secrets.GPG_SECRET_KEY }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_SECRET_KEY_PASSPHRASE }}
         run: mvn deploy -Prelease -DskipTests
