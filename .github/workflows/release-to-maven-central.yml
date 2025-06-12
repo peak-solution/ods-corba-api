@@ -36,4 +36,4 @@ jobs:
         env:
           MAVEN_USER: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PW: ${{ secrets.OSSRH_PASSWORD }}
-        run: mvn deploy -X -Prelease -Dgpg.skip=true -DskipTests -Dmaven.deploy.skip=false
+        run: mvn deploy -Prelease -DskipTests
