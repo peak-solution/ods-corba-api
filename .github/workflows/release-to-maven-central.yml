@@ -28,6 +28,16 @@ jobs:
           server-password: MAVEN_PW
           server-id: central
 
+      - name: Import GPG private key
+        run: |
+          mkdir -p ~/.gnupg
+          echo "$MAVEN_GPG_KEY" | gpg --batch --import
+          echo "$MAVEN_GPG_PASSPHRASE" | gpg --batch --passphrase-fd 0 --import-ownertrust
+          gpg --list-secret-keys --keyid-format LONG
+        env:
+          MAVEN_GPG_KEY: ${{ secrets.GPG_SECRET_KEY }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_SECRET_KEY_PASSPHRASE }}
+
       - name: Release package to Maven central
         env:
           MAVEN_USER: ${{ secrets.OSSRH_USERNAME }}
