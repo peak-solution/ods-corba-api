@@ -28,8 +28,8 @@ jobs:
           distribution: temurin
           java-version: 17
           cache: maven
-          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
-          gpg-passphrase: ""
+          server-username: ${{ secrets.OSSRH_USERNAME }}
+          server-password: ${{ secrets.OSSRH_PASSWORD }}
           server-id: ossrh
 
       - name: Deploy manually added artifacts
