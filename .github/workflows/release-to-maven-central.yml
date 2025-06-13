@@ -30,6 +30,8 @@ jobs:
           cache: maven
           server-username: MAVEN_USER
           server-password: MAVEN_PW
+          gpg-private-key: GPG_USER
+          gpg-passphrase: GPG_PW
           server-id: central
 
       - name: Deploy prebuilt artifacts to Maven Central
@@ -40,10 +42,9 @@ jobs:
             -Dfile=target/ods-corba-api-${{ github.event.inputs.version }}.jar \
             -DpomFile=target/ods-corba-api-${{ github.event.inputs.version }}.pom \
             -Dsources=target/ods-corba-api-${{ github.event.inputs.version }}-sources.jar \
-            -Djavadoc=target/ods-corba-api-${{ github.event.inputs.version }}-javadoc.jar \
-            -Dfiles=target/ods-corba-api-${{ github.event.inputs.version }}.jar.asc,target/ods-corba-api-${{ github.event.inputs.version }}.pom.asc,target/ods-corba-api-${{ github.event.inputs.version }}-sources.jar.asc,target/ods-corba-api-${{ github.event.inputs.version }}-javadoc.jar.asc \
-            -Dclassifiers=jar.asc,pom.asc,sources.jar.asc,javadoc.jar.asc \
-            -Dtypes=asc,asc,asc,asc
+            -Djavadoc=target/ods-corba-api-${{ github.event.inputs.version }}-javadoc.jar
         env:
           MAVEN_USER: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PW: ${{ secrets.OSSRH_PASSWORD }}
+          GPG_USER: ${{ secrets.GPG_SECRET_KEY }}
+          GPG_PW: ${{ secrets.GPG_SECRET_KEY_PASSPHRASE }}
