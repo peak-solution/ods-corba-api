@@ -30,8 +30,8 @@ jobs:
           cache: maven
           server-username: MAVEN_USER
           server-password: MAVEN_PW
-          gpg-private-key: GPG_USER
-          gpg-passphrase: GPG_PW
+          gpg-private-key: ${{ secrets.GPG_SECRET_KEY }}
+          gpg-passphrase: ${{ secrets.GPG_SECRET_KEY_PASSPHRASE }}
           server-id: central
 
       - name: Deploy prebuilt artifacts to Maven Central
@@ -46,5 +46,3 @@ jobs:
         env:
           MAVEN_USER: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PW: ${{ secrets.OSSRH_PASSWORD }}
-          GPG_USER: ${{ secrets.GPG_SECRET_KEY }}
-          GPG_PW: ${{ secrets.GPG_SECRET_KEY_PASSPHRASE }}
