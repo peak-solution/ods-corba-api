@@ -1,11 +1,5 @@
-# Ignore target/ folder, but not its contents explicitly allowed later
-target/*
-!target/.gitkeep
-# allow the build artifacts from local builds to be committed, so GitHub actions work although build itself is not
-# possible because of the ods*.idl file being restricted (and therefore not available for build) by the ASAM license
-!target/*.jar
-!target/*.zip
-!target/*.pom
+# Ignore target
+target/
 
 ### IntelliJ IDEA ###
 .idea

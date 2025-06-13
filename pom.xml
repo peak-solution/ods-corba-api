@@ -36,7 +36,8 @@
 
 	<scm>
 		<url>https://github.com/peak-solution/ods-corba-api</url>
-		<connection>scm:git:https://github.com/peak-solution/ods-corba-api.git</connection>
+		<connection>scm:git:git://github.com/peak-solution/ods-corba-api.git</connection>
+		<developerConnection>scm:git:ssh://github.com/peak-solution/ods-corba-api.git</developerConnection>
 		<tag>v${project.version}</tag>
 	</scm>
 
@@ -215,11 +216,6 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-deploy-plugin</artifactId>
-				<version>3.1.4</version>
 			</plugin>
 		</plugins>
 	</build>
