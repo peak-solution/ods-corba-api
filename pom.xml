@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.peak-solution</groupId>
 	<artifactId>ods-corba-api</artifactId>
-	<version>5.3.1.2</version>
+	<version>5.3.1.3</version>
 	<packaging>jar</packaging>
 
 	<name>ODS CORBA API</name>
@@ -12,7 +12,7 @@
 	<url>https://github.com/peak-solution/ods-corba-api</url>
 
 	<properties>
-		<project.version>5.3.1.2</project.version>
+		<project.version>5.3.1.3</project.version>
 		<api.spec.version>5.3.1</api.spec.version>
 		<maven.compiler.release>17</maven.compiler.release>
 		<project.encoding>UTF-8</project.encoding>
@@ -199,6 +199,23 @@
 					</descriptors>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>3.2.7</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+						<configuration>
+							<keyname>06C84BD97E83C4FD</keyname>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 
@@ -210,23 +227,6 @@
 			</activation>
 			<build>
 				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-gpg-plugin</artifactId>
-						<version>3.2.7</version>
-						<executions>
-							<execution>
-								<id>sign-artifacts</id>
-								<phase>verify</phase>
-								<goals>
-									<goal>sign</goal>
-								</goals>
-								<configuration>
-									<keyname>06C84BD97E83C4FD</keyname>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
 					<plugin>
 						<groupId>org.sonatype.central</groupId>
 						<artifactId>central-publishing-maven-plugin</artifactId>

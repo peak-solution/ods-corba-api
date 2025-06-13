@@ -6,6 +6,7 @@ target/*
 !target/*.jar
 !target/*.zip
 !target/*.pom
+!target/*.asc
 
 ### IntelliJ IDEA ###
 .idea
