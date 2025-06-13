@@ -1,7 +1,11 @@
-name: Deploy to Maven Central (manual artifacts)
+name: Deploy to Maven Central (prebuilt artifacts)
 
 on:
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g. 1.0.0)'
+        required: true
 
 jobs:
   deploy:
@@ -18,7 +22,7 @@ jobs:
           ls target/ods-corba-api-*-javadoc.jar
           ls target/ods-corba-api-*.pom
 
-      - name: Set up Maven
+      - name: Set up Java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -28,20 +32,18 @@ jobs:
           server-password: MAVEN_PW
           server-id: central
 
-      - name: Import GPG private key
+      - name: Deploy prebuilt artifacts to Maven Central
         run: |
-          mkdir -p ~/.gnupg
-          echo "$MAVEN_GPG_KEY" | gpg --batch --import
-          echo "$MAVEN_GPG_PASSPHRASE" | gpg --batch --passphrase-fd 0 --import-ownertrust
-          gpg --list-secret-keys --keyid-format LONG
-        env:
-          MAVEN_GPG_KEY: ${{ secrets.GPG_SECRET_KEY }}
-          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_SECRET_KEY_PASSPHRASE }}
-
-      - name: Release package to Maven central
+          mvn deploy:deploy-file \
+            -Durl=https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/ \
+            -DrepositoryId=central \
+            -Dfile=target/ods-corba-api-${{ github.event.inputs.version }}.jar \
+            -DpomFile=target/ods-corba-api-${{ github.event.inputs.version }}.pom \
+            -Dsources=target/ods-corba-api-${{ github.event.inputs.version }}-sources.jar \
+            -Djavadoc=target/ods-corba-api-${{ github.event.inputs.version }}-javadoc.jar \
+            -Dfiles=target/ods-corba-api-${{ github.event.inputs.version }}.jar.asc,target/ods-corba-api-${{ github.event.inputs.version }}.pom.asc,target/ods-corba-api-${{ github.event.inputs.version }}-sources.jar.asc,target/ods-corba-api-${{ github.event.inputs.version }}-javadoc.jar.asc \
+            -Dclassifiers=jar.asc,pom.asc,sources.jar.asc,javadoc.jar.asc \
+            -Dtypes=asc,asc,asc,asc
         env:
           MAVEN_USER: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PW: ${{ secrets.OSSRH_PASSWORD }}
-          MAVEN_GPG_KEY: ${{ secrets.GPG_SECRET_KEY }}
-          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_SECRET_KEY_PASSPHRASE }}
-        run: mvn deploy -Prelease -DskipTests
